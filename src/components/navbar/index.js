@@ -8,25 +8,19 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                <Link to="/">
-                    <a className="navbar-item" href="https://bulma.io">
-                        <img src="https://ecs7.tokopedia.net/assets-tokopedia-lite/v2/zeus/production/e5b8438b.svg"/>
-                    </a>
+                <Link to="/" className="navbar-item">
+                    <img src="https://ecs7.tokopedia.net/assets-tokopedia-lite/v2/zeus/production/e5b8438b.svg"/>
                 </Link>
                 
             </div>
 
             <div className="navbar-menu">
                 <div className="navbar-start">
-                    <Link to="/add_bid">
-                        <a className="navbar-item">
-                            Add Bid
-                        </a>
+                    <Link to="/add_bid" className="navbar-item">
+                        Add Bid
                     </Link>
-                    <Link to="/my_bid">
-                        <a className="navbar-item">
-                            My Bid
-                        </a>
+                    <Link to="/my_bid" className="navbar-item">
+                        My Bid
                     </Link>     
                 </div>
 
