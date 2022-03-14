@@ -1,5 +1,6 @@
 import { Routes } from "react-router-dom";
 import './App.css';
+import './bulma.min.css'
 
 
 const App = () => {
