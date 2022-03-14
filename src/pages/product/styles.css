@@ -1,0 +1,20 @@
+.product-title {
+    border-bottom: 1px solid var(--N75,#E5E7E9);
+    padding-bottom: 10px;
+}
+
+.card-info {
+    text-align: center;
+}
+
+.bid-number-info {
+    margin: 40px 0 !important;
+}
+
+.input-bid {
+    margin-bottom: 20px;
+}
+
+.button-bid {
+    width: 100%;
+}
