@@ -7,6 +7,7 @@ import Product from "./pages/product";
 import Navbar from "./components/navbar";
 
 import './bulma.min.css'
+import Profile from "./pages/profile";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/" element={<Home />}/>
         <Route path="/product/:productId" element={<Product />}/>
         <Route path="/add_bid" element={<AddProduct />}/>
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
