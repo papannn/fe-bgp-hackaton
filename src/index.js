@@ -4,6 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from './firebase';
+
+initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <BrowserRouter>
