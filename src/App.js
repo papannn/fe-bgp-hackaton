@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { Routes, Route } from "react-router-dom";
 
+import { getDatabase, ref, onValue } from "firebase/database";
+
 import axios from "axios";
 
 import AddProduct from "./pages/addproduct";
@@ -22,6 +24,62 @@ const App = () => {
   const [productData, setProductData] = useState({});
   const [productBuyerListData, setProductBuyerListData] = useState([]);
   const [productSellerListData, setProductSellerListData] = useState([]);
+  const [wsData, setWsData] = useState({});
+
+  const db = getDatabase();
+  const auctionRef = ref(db, 'Auction/');
+
+  onValue(auctionRef, (snapshot) => {
+    const data = snapshot.val();
+    if(JSON.stringify(wsData) !== JSON.stringify(data)) {
+      setWsData(data);
+      let flagHome = false;
+      let flagBuyer = false;
+      let flagSeller = false;
+
+      if(data[productData.product_id] !== undefined) {
+        productData.total_bidder = data[productData.product_id].bidder_count;
+        productData.start_bid = data[productData.product_id].current_price;
+      }
+
+      for(let i = 0 ; i < productListData.length ; i++) {
+        const product_id = productListData[i].product_id;
+        if(data[product_id] !== undefined) {
+          productListData[i].total_bidder = data[product_id].bidder_count;
+          productListData[i].start_bid = data[product_id].current_price;
+          flagHome = true;
+        }
+      }
+
+      for(let i = 0 ; i < productBuyerListData.length ; i++){
+        const product_id = productBuyerListData[i].product_id;
+        if(data[product_id] !== undefined) {
+          productBuyerListData[i].total_bidder = data[product_id].bidder_count;
+          productBuyerListData[i].start_bid = data[product_id].current_price;
+          flagBuyer = true;
+        }
+      }
+
+      for(let i = 0 ; i < productSellerListData.length ; i++){
+        const product_id = productSellerListData[i].product_id;
+        if(data[product_id] !== undefined) {
+          productSellerListData[i].total_bidder = data[product_id].bidder_count;
+          productSellerListData[i].start_bid = data[product_id].current_price;
+          flagSeller = true;
+        }
+      }
+
+      if (flagHome) {
+        setProductListData(productListData)
+      }
+      if (flagBuyer) {
+        setProductBuyerListData(productBuyerListData);
+      }
+      if(flagSeller) {
+        setProductSellerListData(productSellerListData)
+      }
+    }
+  });  
 
   const getUserInfo = () => {
     if (token != null) {
@@ -76,6 +134,8 @@ const App = () => {
   const handleClickProduct = (productParamData) => {
     setProductData(productParamData)
   }
+
+  
 
   useEffect(() => {
     getUserInfo();
