@@ -1,0 +1,2 @@
+export const BE_HOST = "http://ec2-13-250-36-182.ap-southeast-1.compute.amazonaws.com:8000/"
+export const LOGIN_URL = "https://bgp-auction-user.auth.ap-southeast-1.amazoncognito.com/login?client_id=3vkon7pnfgrps4v2o3hj6ev37b&response_type=code&scope=email+openid&redirect_uri=http%3A%2F%2Flocalhost:3000"

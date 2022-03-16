@@ -14,10 +14,11 @@ const Card = ({
     end_time,
     highest_bid,
     total_bidder,
-    store_name
+    store_name,
+    handleClickProduct
 }) => {
     return (
-        <div className="column is-one-fifth">
+        <div className="column is-one-fifth" onClick={handleClickProduct}>
             <Link to={`/product/${product_id}`}>
                 <div class="card">
                     <div class="card-image">

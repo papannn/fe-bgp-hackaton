@@ -1,21 +1,39 @@
 import React, {useState} from 'react';
+
+import moment from 'moment';
+
 import "./styles.css"
+import axios from 'axios';
+import { BE_HOST } from '../../const';
 
 
-const Product = () => {
-    const [product, setProduct] = useState({
-        "product_id" : 1,
-        "user_id" : 1,
-        "name" : "Mainan anak lucu",
-        "image_url" : "https://cdn-brilio-net.akamaized.net/news/2021/07/02/209035/1509006-potret-lucu-mainan-anak.jpg",
-        "description" : "Mainan anak untuk hadiah ulang tahun, cocok buat kado natal juga bunda",
-        "start_bid" : 100000,
-        "multiple_bid" : 500,
-        "start_time" : 1647173241, //unix timestamp
-        "end_time" : 1647173241,
-        "highest_bid_id" : 1,
-        "total_bidder" : 20,
-    })
+const Product = (props) => {
+
+    const product = props.productData;
+    const [countdownText, setCountdownText] = useState("")
+    const token = localStorage.getItem('token');
+    setInterval(() => {
+        const currentUnix = new Date() / 1000 | 0;
+        const endTime = product.end_time;
+        const diffTime = endTime - currentUnix;
+        var duration = moment.duration(diffTime*1000, 'milliseconds');
+
+        duration = moment.duration(duration - 1000, 'milliseconds');
+        setCountdownText(duration.days() + " hari " + duration.hours() + " jam " + duration.minutes() + " menit " + duration.seconds() + " detik");
+    }, 1000)
+
+    const [amount, setAmount] = useState(0);
+
+    const bid = () => {
+        const payload = {
+            product_id: product.product_id,
+            user_id: token,
+            amount: parseInt(amount, 10)
+        }
+        axios.post(BE_HOST + "bid", payload).then(res => {
+
+        });
+    }
 
     return (
         <section className="section">
@@ -28,9 +46,9 @@ const Product = () => {
                 <div className="column">
                     <h1 className="title is-5 product-title">{product.name}</h1>
                     <p className="title is-4">Rp. {product.start_bid}</p>
-                    <p className="title is-4">Windah Shop</p>
+                    <p className="title is-4"></p>
                     <p className="subtitle">
-                    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+                    {product.description}
                     </p>
                 </div>
                 <div className="column is-one-fifth">
@@ -39,14 +57,18 @@ const Product = () => {
                             <p className="title is-4 card-info">
                                 Berakhir pada
                             </p>
-                            <p className="title is-5 card-info">
-                                12 hari 23 jam 59 menit 23 detik
+                            <p className="title is-5 card-info" id="countdown">
+                                {countdownText}
                             </p>
                             <p className="subtitle is-6 card-info bid-number-info">
-                                200 orang telah ngebid
+                                {product.total_bidder} orang telah ngebid
                             </p>
-                            <input className="input input-bid"/>
-                            <button className="button is-success button-bid">Bid</button>
+                            <input className="input input-bid" type="number" onChange={(e) => {
+                                setAmount(e.target.value);
+                            }}/>
+                            <button className="button is-success button-bid" onClick={() => {
+                                bid()
+                            }}>Bid</button>
                         </div>
                     </div>
                 </div>
